@@ -23,6 +23,12 @@ builder.Services.AddSwaggerGen();
 // Configurando interfaces para ser usadas por el controlador.
 builder.Services.AddScoped<ISchoolService, SchoolService>();
 
+// Cors
+builder.Services.AddCors(options => options.AddPolicy("AllowWebApp",
+                         builder => builder.AllowAnyOrigin()
+                                            .AllowAnyHeader()
+                                            .AllowAnyMethod()));
+
 // Registrar Base de datos
 builder.Services.AddDbContext<HogwartsContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -35,6 +41,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AllowWebApp");
 
 app.UseHttpsRedirection();
 
